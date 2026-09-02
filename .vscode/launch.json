@@ -9,7 +9,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}/mattergen-env/bin/python",
             "args": [
                 "${workspaceFolder}/results/mattergen_base",
                 "--pretrained-name=mattergen_base",
@@ -25,7 +25,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}/mattergen-env/bin/python",
             "args": [
                 "${workspaceFolder}/results/dft_mag_density",
                 "--pretrained-name=dft_mag_density",
@@ -42,7 +42,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}/mattergen-env/bin/python",
             "args": [
                 "--structures_path=${workspaceFolder}/results/mattergen_base",
                 "--relax=True",
@@ -59,7 +59,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}/mattergen-env/bin/python",
             "args": [
                 "data_module=mp_20",
                 "~trainer.logger"
@@ -73,7 +73,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}/mattergen-env/bin/python",
             "args": [
                 "adapter.pretrained_name=mattergen_base",
                 "data_module=mp_20",
@@ -90,7 +90,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python"
+            "python": "${workspaceFolder}/mattergen-env/bin/python"
         },
         {
             "name": "MatterGen: Pytest (current file)",
@@ -100,7 +100,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}/mattergen-env/bin/python",
             "args": [
                 "${file}",
                 "-v"

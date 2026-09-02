@@ -4,7 +4,7 @@
         {
             "label": "MatterGen: Setup venv (uv, python 3.10)",
             "type": "shell",
-            "command": "uv venv .venv --python 3.10 && source .venv/bin/activate && uv pip install -e .",
+            "command": "uv venv mattergen-env --python 3.10 && source mattergen-env/bin/activate && uv pip install -e .",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -24,7 +24,7 @@
         {
             "label": "MatterGen: Check GPU / torch CUDA",
             "type": "shell",
-            "command": "source .venv/bin/activate && python -c \"import torch; print('torch', torch.__version__); print('cuda available', torch.cuda.is_available()); print('device', torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)\" && nvidia-smi",
+            "command": "source mattergen-env/bin/activate && python -c \"import torch; print('torch', torch.__version__); print('cuda available', torch.cuda.is_available()); print('device', torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)\" && nvidia-smi",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -34,7 +34,7 @@
         {
             "label": "MatterGen: Generate (unconditional, mattergen_base)",
             "type": "shell",
-            "command": "source .venv/bin/activate && mattergen-generate results/mattergen_base --pretrained-name=mattergen_base --batch_size=16 --num_batches=1",
+            "command": "source mattergen-env/bin/activate && mattergen-generate results/mattergen_base --pretrained-name=mattergen_base --batch_size=16 --num_batches=1",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -44,7 +44,7 @@
         {
             "label": "MatterGen: Evaluate",
             "type": "shell",
-            "command": "source .venv/bin/activate && mattergen-evaluate --structures_path=results/mattergen_base --relax=True --structure_matcher='disordered' --save_as=results/mattergen_base/metrics.json --energy_correction_scheme=TRI2024",
+            "command": "source mattergen-env/bin/activate && mattergen-evaluate --structures_path=results/mattergen_base --relax=True --structure_matcher='disordered' --save_as=results/mattergen_base/metrics.json --energy_correction_scheme=TRI2024",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -54,7 +54,7 @@
         {
             "label": "MatterGen: Train (mp_20, no W&B)",
             "type": "shell",
-            "command": "source .venv/bin/activate && mattergen-train data_module=mp_20 ~trainer.logger",
+            "command": "source mattergen-env/bin/activate && mattergen-train data_module=mp_20 ~trainer.logger",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
@@ -64,7 +64,7 @@
         {
             "label": "MatterGen: Run tests",
             "type": "shell",
-            "command": "source .venv/bin/activate && pytest mattergen -v",
+            "command": "source mattergen-env/bin/activate && pytest mattergen -v",
             "options": {
                 "cwd": "${workspaceFolder}"
             },

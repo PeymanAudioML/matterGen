@@ -1,0 +1,110 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "MatterGen: Generate (unconditional, mattergen_base)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mattergen/scripts/generate.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "${workspaceFolder}/results/mattergen_base",
+                "--pretrained-name=mattergen_base",
+                "--batch_size=16",
+                "--num_batches=1"
+            ]
+        },
+        {
+            "name": "MatterGen: Generate (property-conditioned, dft_mag_density)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mattergen/scripts/generate.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "${workspaceFolder}/results/dft_mag_density",
+                "--pretrained-name=dft_mag_density",
+                "--batch_size=16",
+                "--properties_to_condition_on={'dft_mag_density':0.15}",
+                "--diffusion_guidance_factor=2.0"
+            ]
+        },
+        {
+            "name": "MatterGen: Evaluate",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mattergen/scripts/evaluate.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "--structures_path=${workspaceFolder}/results/mattergen_base",
+                "--relax=True",
+                "--structure_matcher=disordered",
+                "--save_as=${workspaceFolder}/results/mattergen_base/metrics.json",
+                "--energy_correction_scheme=TRI2024"
+            ]
+        },
+        {
+            "name": "MatterGen: Train (mp_20, no W&B)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mattergen/scripts/run.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "data_module=mp_20",
+                "~trainer.logger"
+            ]
+        },
+        {
+            "name": "MatterGen: Finetune (mp_20, dft_mag_density)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mattergen/scripts/finetune.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "adapter.pretrained_name=mattergen_base",
+                "data_module=mp_20",
+                "+lightning_module/diffusion_module/model/property_embeddings@adapter.adapter.property_embeddings_adapt.dft_mag_density=dft_mag_density",
+                "~trainer.logger",
+                "data_module.properties=[\"dft_mag_density\"]"
+            ]
+        },
+        {
+            "name": "MatterGen: Current file",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        },
+        {
+            "name": "MatterGen: Pytest (current file)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "${file}",
+                "-v"
+            ]
+        }
+    ]
+}

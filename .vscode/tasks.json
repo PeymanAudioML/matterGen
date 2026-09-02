@@ -1,0 +1,78 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "MatterGen: Setup venv (uv, python 3.10)",
+            "type": "shell",
+            "command": "uv venv .venv --python 3.10 && source .venv/bin/activate && uv pip install -e .",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "MatterGen: Pull LFS checkpoints",
+            "type": "shell",
+            "command": "git lfs checkout $(find checkpoints -name 'last.ckpt')",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "MatterGen: Check GPU / torch CUDA",
+            "type": "shell",
+            "command": "source .venv/bin/activate && python -c \"import torch; print('torch', torch.__version__); print('cuda available', torch.cuda.is_available()); print('device', torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)\" && nvidia-smi",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "MatterGen: Generate (unconditional, mattergen_base)",
+            "type": "shell",
+            "command": "source .venv/bin/activate && mattergen-generate results/mattergen_base --pretrained-name=mattergen_base --batch_size=16 --num_batches=1",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "MatterGen: Evaluate",
+            "type": "shell",
+            "command": "source .venv/bin/activate && mattergen-evaluate --structures_path=results/mattergen_base --relax=True --structure_matcher='disordered' --save_as=results/mattergen_base/metrics.json --energy_correction_scheme=TRI2024",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "MatterGen: Train (mp_20, no W&B)",
+            "type": "shell",
+            "command": "source .venv/bin/activate && mattergen-train data_module=mp_20 ~trainer.logger",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "MatterGen: Run tests",
+            "type": "shell",
+            "command": "source .venv/bin/activate && pytest mattergen -v",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}
